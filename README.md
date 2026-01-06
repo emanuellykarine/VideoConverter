@@ -10,7 +10,7 @@ Protobuf (Protocol Buffers) é um método eficiente e neutro de serialização d
 - Go
 
     golang-go
-    
+
     Linguagem utilizada para implementar o servidor gRPC.
 
 - Protobuf / gRPC
@@ -61,8 +61,8 @@ protoc \
   converter.proto
 ```
 Isso gera:
-structs
-interface do serviço
+structs, 
+interface do serviço, 
 código de serialização
 
 - Código do cliente python
