@@ -8,24 +8,33 @@ Protobuf (Protocol Buffers) é um método eficiente e neutro de serialização d
 
 ## Dependências
 - Go
+
     golang-go
+    
     Linguagem utilizada para implementar o servidor gRPC.
 
 - Protobuf / gRPC
+
     protobuf-compiler
+
     Compilador Protobuf (protoc), utilizado para gerar os códigos gRPC no Go e no Python.
 
     grpcio
+
     Biblioteca gRPC para cliente Python, responsável pela comunicação com o servidor.
 
     grpcio-tools
+
     Fornece o compilador Protobuf para Python (grpc_tools.protoc), usado para gerar os arquivos *_pb2.py.
 
 - Processamento de vídeo e áudio
+
     yt-dlp
+
     Ferramenta responsável por baixar o vídeo do YouTube a partir da URL fornecida.
 
     ffmpeg
+
     Ferramenta para extração e conversão de áudio, utilizada para gerar o arquivo MP3 a partir do vídeo.
 
 ## Passo a Passo
