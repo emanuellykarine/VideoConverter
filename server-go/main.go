@@ -50,7 +50,7 @@ func (s *server) ConvertVideoToAudio(req *pb.VideoRequest, stream pb.VideoConver
 
 	//  Enviar em streaming, lê os arquivos em pedaços e envia cada pedaço para o cliente
 	for {
-		n, err := file.Read(buffer)
+		n, err := file.Read(buffer) //lê até 1024 bytes do arquivo e armazena em buffer
 		if err == io.EOF {
 			break
 		}
@@ -58,11 +58,11 @@ func (s *server) ConvertVideoToAudio(req *pb.VideoRequest, stream pb.VideoConver
 			return err
 		}
 
-		chunk := &pb.AudioChunk{
+		chunk := &pb.AudioChunk{ // cria uma mensagem protobuf AudioChunk com os dados lidos
 			Data: buffer[:n],
 		}
 
-		if err := stream.Send(chunk); err != nil {
+		if err := stream.Send(chunk); err != nil { // envia o pedaço para o cliente via stream
 			return err
 		}
 	}
