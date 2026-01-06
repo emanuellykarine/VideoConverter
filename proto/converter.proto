@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package converter;
+
+//nome do módulo e pacote em que o código será gerado. 
+option go_package = "server-go/converter";
+
+// Serviço responsável pela conversão de vídeo para áudio
+service VideoConverter {
+  // Recebe uma URL do YouTube e retorna o áudio em streaming
+  rpc ConvertVideoToAudio (VideoRequest) returns (stream AudioChunk);
+}
+
+// Requisição com o link do vídeo
+message VideoRequest {
+  string youtube_url = 1;
+}
+
+// Cada pedaço do áudio MP3
+message AudioChunk {
+  bytes data = 1;
+}
