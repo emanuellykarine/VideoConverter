@@ -28,12 +28,16 @@ func (s *server) ConvertVideoToAudio(req *pb.VideoRequest, stream pb.VideoConver
 
 	// Baixar vídeo, o exec command executa comandos do sistema operacional
 	cmdDownload := exec.Command("yt-dlp", "-f", "mp4", "-o", videoFile, url) //baixa o vídeo no formato mp4, executa o comando yt-dlp e salva como video.mp4
+	//-o é o nome do arquivo de saida
+	//-f é o formato que o arquivo vai sair
 	if err := cmdDownload.Run(); err != nil {
 		return fmt.Errorf("erro ao baixar vídeo: %v", err)
 	}
 
 	// Converter para MP3
 	cmdConvert := exec.Command("ffmpeg", "-y", "-i", videoFile, audioFile) //converte o vídeo baixado para mp3 usando o ffmpeg
+	// -y sobrescreve arquivos
+	// -i nome do arquivo de entrada
 	if err := cmdConvert.Run(); err != nil {
 		return fmt.Errorf("erro ao converter áudio: %v", err)
 	}
