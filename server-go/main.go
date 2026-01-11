@@ -8,7 +8,7 @@ import (
 	"os" // usado para manipulação de arquivos
 	"os/exec" // permite executar comandos do sistema operacional (yt-dlp e ffmpeg)
 
-	"path/filepath" //caso queira trocar o caminho de download dos arquivos temporários
+	//"path/filepath" //caso queira trocar o caminho de download dos arquivos temporários
 	pb "server-go/converter" // importa o pacote gerado pelo compilador protobuf
 	"strings" // usado para manipulação de strings
 	"google.golang.org/grpc" //biblioteca principal do servidor gRPC
