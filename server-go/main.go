@@ -32,33 +32,27 @@ func (s *server) ConvertVideoToAudio(req *pb.VideoRequest, stream pb.VideoConver
 	title := strings.TrimSpace(string(output))
 	log.Println("Título do vídeo:", title)
 
-	//Diretório base para salvar os arquivos temporários
-	// videoFile := filepath.Join("downloads", "temp", title+".mp4")
-	// audioFile := filepath.Join("downloads", "temp", title+".mp3")
-	
-	// Arquivos temporários
-	videoFile := title + ".mp4"
+	// Arquivo temporário de áudio
 	audioFile := title + ".mp3"
 
-	// Baixar vídeo, o exec command executa comandos do sistema operacional
-	cmdDownload := exec.Command("yt-dlp", "-f", "mp4", "-o", videoFile, url) //baixa o vídeo no formato mp4, executa o comando yt-dlp e salva como video.mp4
-	//-o é o nome do arquivo de saida
-	//-f é o formato que o arquivo vai sair
+	// Baixar áudio diretamente com yt-dlp (evita problemas com formatos de vídeo bloqueados)
+	// -f bestaudio: seleciona o melhor formato de áudio disponível
+	// --extract-audio: extrai apenas o áudio
+	// --audio-format mp3: converte para MP3
+	// -o: nome do arquivo de saída
+	cmdDownload := exec.Command("yt-dlp", 
+		"-f", "bestaudio[ext=m4a]/bestaudio",
+		"--extract-audio",
+		"--audio-format", "mp3",
+		"-o", audioFile,
+		url)
+	
+	// Captura a saída de erro para melhor diagnóstico
+	cmdDownload.Stderr = os.Stderr
+	cmdDownload.Stdout = os.Stdout
+	
 	if err := cmdDownload.Run(); err != nil {
-		return fmt.Errorf("erro ao baixar vídeo: %v", err)
-	}
-
-	// Converter para MP3
-	cmdConvert := exec.Command("ffmpeg", "-y", "-i", videoFile, audioFile) //converte o vídeo baixado para mp3 usando o ffmpeg
-	// -y sobrescreve arquivos
-	// -i nome do arquivo de entrada
-	if err := cmdConvert.Run(); err != nil {
-		return fmt.Errorf("erro ao converter áudio: %v", err)
-	}
-
-	//remover video temporário
-	if err := os.Remove(videoFile); err != nil {
-		log.Printf("aviso: não foi possível remover o arquivo de vídeo temporário: %v", err)
+		return fmt.Errorf("erro ao baixar/converter áudio: %v", err)
 	}
 
 	//  Abrir MP3
